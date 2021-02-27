@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Create Account</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    </head>
+    <body>
+        <h1>Create Account</h1>
+        <input id="firstname" placeholder="First Name">
+        <br>
+        <input id="lastname" placeholder="Last Name">
+        <br>
+        <input id="email" placeholder="Email">
+        <br>
+        <input id="username" placeholder="Username">
+        <br>
+        <input id="password" placeholder="Password">
+        <br>
+        <div id="create-button">
+            <button v-on:click="displayData">Create</button>
+        </div>
+    </body>
+    <script>
+        var createButton = new Vue({
+            el: '#create-button',
+            data: {},
+            methods: {
+                displayData: function(event) {
+                    alert("Welcome " + document.getElementById('firstname').value + " " + document.getElementById('lastname').value + "!\nEmail: " + document.getElementById('email').value + "\nUsername: " + document.getElementById('username').value + "\nPassword: " + document.getElementById('password').value)
+                }
+            }
+        })
+    </script>
+</html>

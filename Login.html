@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    </head>
+    <body>
+        <h1>Welcome to AUX!</h1>
+        <input id="username" placeholder="Username">
+        <br>
+        <input id="password" placeholder="Password">
+        <br>
+        <div id="login-button">
+            <button v-on:click="displayData">Login</button>
+        </div>
+        <br>
+        <a href="Login.html">Forget your password?</a>
+        <br>
+        <h2>Here's how AUX works:</h2>
+    </body>
+    <script>
+        var loginButton = new Vue({
+            el: '#login-button',
+            data: {},
+            methods: {
+                displayData: function(event) {
+                    alert("Username: " + document.getElementById('username').value + "\nPassword: " + document.getElementById('password').value)
+                }
+            }
+        })
+    </script>
+</html>
