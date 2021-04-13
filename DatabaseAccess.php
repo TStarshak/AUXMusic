@@ -40,6 +40,22 @@
             while($row = mysqli_fetch_assoc($result)) {
                 echo $row["user_id"] . " - " . $row["first_name"] . " - " . $row["last_name"] . " - " . $row["username"] . " - " . $row["passcode"] . "\n";
             }
+
+            $conn->close();
+        } else if($_POST['functionname'] == "getAccount"){
+            $username = clean_input($_POST['arguments'][0]);
+            $password = clean_input($_POST['arguments'][1]);
+
+            $sql = "SELECT passcode FROM users WHERE username='$username'";
+            $result = mysqli_query($conn, $sql);
+
+            if(mysqli_fetch_assoc($result)["passcode"] == $password){
+                echo "\nYou are now logged in.";
+            } else {
+                echo "\nYou are not logged in.";
+            }
+
+            $conn->close();
         }
     }
 
