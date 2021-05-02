@@ -23,7 +23,13 @@
             $username = clean_input($_POST['arguments'][3]);
             $password = clean_input($_POST['arguments'][4]);
     
-            $sql = "INSERT INTO users (first_name, last_name, username, passcode) VALUES ('$firstname', '$lastname', '$username', '$password')";
+            $sql = "SELECT user_id FROM users ORDER BY user_id DESC"; 
+
+            $result = mysqli_query($conn, $sql);
+
+            $nextUserID = intval(mysqli_fetch_assoc($result)["user_id"]) + 1;
+
+            $sql = "INSERT INTO users (user_id, first_name, last_name, username, passcode, isDJ, rooms_room_id) VALUES ('$nextUserID', '$firstname', '$lastname', '$username', '$password', false, null)";
 
             if (mysqli_query($conn, $sql)) {
                 echo "\nUser data uploaded successfully";
@@ -49,13 +55,45 @@
             $sql = "SELECT passcode FROM users WHERE username='$username'";
             $result = mysqli_query($conn, $sql);
 
-            if(mysqli_fetch_assoc($result)["passcode"] == $password){
+            if($password != "" && strcmp(mysqli_fetch_assoc($result)["passcode"], $password) == 0){
                 echo "\nYou are now logged in.";
+                $sql = "SELECT user_id FROM users WHERE username='$username'";
+                $result = mysqli_query($conn, $sql);
+                echo mysqli_fetch_assoc($result)["user_id"];
             } else {
-                echo "\nYou are not logged in.";
+                echo "\nThat username and password combination does not exist.";
             }
 
             $conn->close();
+        } else if($_POST['functionname'] == "getFirstName"){
+            $user_id = $_POST['arguments'][0];
+            $sql = "SELECT first_name FROM users WHERE user_id='$user_id'";
+            $result = mysqli_query($conn, $sql);
+            echo mysqli_fetch_assoc($result)["first_name"];
+        } else if($_POST['functionname'] == "getFullName"){
+            $user_id = $_POST['arguments'][0];
+            $sql = "SELECT first_name FROM users WHERE user_id='$user_id'";
+            $result = mysqli_query($conn, $sql);
+            echo mysqli_fetch_assoc($result)["first_name"] . " ";
+            $user_id = $_POST['arguments'][0];
+            $sql = "SELECT last_name FROM users WHERE user_id='$user_id'";
+            $result = mysqli_query($conn, $sql);
+            echo mysqli_fetch_assoc($result)["last_name"];
+        } else if($_POST['functionname'] == "startSession"){
+            $user_id = $_POST['arguments'][0];
+
+            //Getting room ID to create new room
+            $sql = "SELECT room_id FROM rooms ORDER BY room_id DESC";
+            $result = mysqli_query($conn, $sql);
+            $newRoomID = intval(mysqli_fetch_assoc($result)["room_id"]) + 1;
+
+            //Creating the new room with the new room ID
+            $sql = "INSERT INTO rooms (room_id, passcode) VALUES ('$newRoomID', '')";
+            $result = mysqli_query($conn, $sql);
+
+            //Placing user into new room
+            $sql = "UPDATE users SET rooms_room_id='$newRoomID',isDJ=1 WHERE user_id='$user_id'";
+            $result = mysqli_query($conn, $sql);
         }
     }
 

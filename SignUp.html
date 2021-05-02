@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Create Account</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="SignUpStyle.css">
+    </head>
+    <body>
+        <div id = "topbar">
+            <img src = "White Logo.png" id = "logo">aux
+            <div id = "profile" type="text" name="profile">
+              <img id = "profpic" src = "profilepic.jpg">
+              <span id = "username">GUEST</span>
+            </div>
+        </div>
+        <h3>Sign up</h3>
+        <div class="text-enter">
+            <p class="text-enter-name">First name<span id="firstname" style="color: #587ad8;">*</span></p>
+            <input id="firstname-enter">
+        </div>
+        <div class="text-enter">
+            <p class="text-enter-name">Last name<span id="lastname" style="color: #587ad8;">*</span></p>
+            <input id="lastname-enter">
+        </div>
+        <div class="text-enter">
+            <p class="text-enter-name">Email<span id="email" style="color: #587ad8;">*</span></p>
+            <input id="email-enter">
+        </div>
+        <div class="text-enter">
+            <p class="text-enter-name">Username<span id="usernameStar" style="color: #587ad8;">*</span></p>
+            <input id="username-enter">
+        </div>
+        <div class="text-enter">
+            <p class="text-enter-name">Password<span id="password" style="color: #587ad8;">*</span></p>
+            <input type="password" id="password-enter"><input type="submit" id="show" onclick="swapPasswordVisibility()" value="SHOW">
+        </div>
+        <div id="user-buttons">
+            <button id="signup-button" v-on:click="addUser">SIGN UP</button>
+            <a href="Login.html" style="text-decoration: none;"><button id="login-button" v-on:click="seeUsers">&#8592 BACK TO LOGIN</button></a>
+        </div>
+    </body>
+    <script>
+        var createButton = new Vue({
+            el: '#user-buttons',
+            data: {},
+            methods: {
+                addUser: function(event) {
+                    var allDataValid = true;
+
+                    if(document.getElementById('firstname-enter').value == ""){
+                        allDataValid = false;
+                        document.getElementById("firstname").style.color = "red";
+                    } else {
+                        document.getElementById("firstname").style.color = "green";
+                    }
+
+                    if(document.getElementById('lastname-enter').value == ""){
+                        allDataValid = false;
+                        document.getElementById("lastname").style.color = "red";
+                    } else {
+                        document.getElementById("lastname").style.color = "green";
+                    }
+
+                    if(document.getElementById('email-enter').value == ""){
+                        allDataValid = false;
+                        document.getElementById("email").style.color = "red";
+                    } else {
+                        document.getElementById("email").style.color = "green";
+                    }
+
+                    if(document.getElementById('username-enter').value == ""){
+                        allDataValid = false;
+                        document.getElementById("usernameStar").style.color = "red";
+                    } else {
+                        document.getElementById("usernameStar").style.color = "green";
+                    }
+
+                    if(document.getElementById('password-enter').value == ""){
+                        allDataValid = false;
+                        document.getElementById("password").style.color = "red";
+                    } else {
+                        document.getElementById("password").style.color = "green";
+                    }
+
+                    if(allDataValid){
+                        jQuery.ajax({
+                            type: "POST",
+                            url: 'DatabaseAccess.php',
+                            data: {functionname: 'createAccount', arguments: [document.getElementById('firstname-enter').value, document.getElementById('lastname-enter').value, document.getElementById('email-enter').value, document.getElementById('username-enter').value, document.getElementById('password-enter').value]},
+                            success: function(data, status){
+                                alert(data);
+                            }
+                        });
+                    }
+                },
+
+                seeUsers: function(event) {
+                    jQuery.ajax({
+                            type: "POST",
+                            url: 'DatabaseAccess.php',
+                            data: {functionname: 'seeUsers'},
+                            success: function(data, status){
+                                alert(data);
+                            }
+                        });
+                }
+            }
+        })
+
+        function swapPasswordVisibility(){
+        if(document.getElementById("show").style.color == "rgb(167, 167, 167)" || document.getElementById("show").style.color == ""){
+          document.getElementById("show").style.color = "#d1d1d1";
+          document.getElementById("password-enter").type = "text";
+        } else {
+          document.getElementById("show").style.color = "#a7a7a7";
+          document.getElementById("password-enter").type = "password";
+        }
+       }
+    </script>
+</html>

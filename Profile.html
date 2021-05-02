@@ -1,17 +1,124 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Profile</title>
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
-    </head>
-    <body>
-        <h1>Profile</h1>
-        <img style="width: 10%" src="https://www.machinecurve.com/wp-content/uploads/2019/07/thispersondoesnotexist-1-1022x1024.jpg">
-        <h3>Firstname Lastname</h3>
-        <p>Here's some info about Firstname Lastname! Wow what an interesting guy!</p>
-        <h1>Connected Accounts</h1>
-        <p>Spotify</p>
-        <p>Apple Music</p>
-        <p>Soundcloud</p>
-    </body>
+
+<head>
+  <link rel="stylesheet" href="ProfileStyle.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+      <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <link rel="shortcut icon" type="image/jpg" href="Logo.png"/>
+  <title>Here's your session...</title>
+
+  <script>
+    $(function() {
+       $( "#queuelist" ).sortable();
+    });
+ </script>
+</head>
+
+<body onload="getNameData()">
+
+    <!-- sidebar code -->
+    <div id="sidebar" class="sidebar">
+     <img src="White Logo.png" id="logosidebar">
+     <span id="welcometext">Welcome</span>
+     <h4>MENU</h4>
+     <a href="#">Home</a>
+     <a href="#">Recent</a>
+     <a href="#">Library</a>
+     <h4>SESSIONS</h4>
+     <a href="#"><img src="join-session.png" id="joinicon">Join Session</a>
+     <a href="#"><img onclick="startSession()" src="start-session.png" id="starticon">Start Session</a>
+     <button class="openbtn"><img src="sidebar-icon.png" id="sidebaricon"></button>   
+   </div> 
+
+  <script>
+    $('.openbtn').click(function(){
+      $('.sidebar').toggleClass('active');
+    });
+  </script> 
+
+<div id="main">
+  <!-- logo + name header -->
+  <h1>
+    <div id="header" name="header">
+      <img src="White Logo.png" id="logo">
+      aux
+      <!-- profile dropdown menu section-->
+  <div id="profiledropdown" name="profiledropdown">
+    
+    <button onclick="myFunction()" class="dropbtn"><img src="pfp-ex.jpg" id="pfp"><span id="username"></span></button>
+    <div id="myDropdown" class="dropdown-content">
+      <a href="#">Profile</a>
+      <a href="#">Settings</a>
+      <a href="Login.html" onclick="logOut()">Log Out</a>
+    </div>
+  </div>
+    </div>
+  </h1>
+</div>
+<img src="pfp-ex.jpg" id="pfp-large">
+<h1 id="user-full-name"></h1>
+</body>
+
+<script>
+  function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+  }
+
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+
+  function logOut(){
+    document.cookie = "user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  }
+
+  function startSession(){
+    jQuery.ajax({
+          type: "POST",
+          url: 'DatabaseAccess.php',
+          data: {functionname: 'startSession', arguments: [document.cookie.substring(document.cookie.indexOf("user_id=") + 8, document.cookie.indexOf(";"))]},
+          success: function(data, status){
+            document.location.href = "DJMainPage.html";
+          }
+      });
+  }
+
+  function getNameData(){
+      jQuery.ajax({
+          type: "POST",
+          url: 'DatabaseAccess.php',
+          data: {functionname: 'getFirstName', arguments: [document.cookie.substring(document.cookie.indexOf("user_id=") + 8, document.cookie.indexOf(";"))]},
+          success: function(data, status){
+            document.getElementById("welcometext").innerText = "Welcome, " + data.substring(data.indexOf("successfully") + 12);
+            document.getElementById("username").innerText = data.substring(data.indexOf("successfully") + 12);
+          }
+      });
+
+      jQuery.ajax({
+          type: "POST",
+          url: 'DatabaseAccess.php',
+          data: {functionname: 'getFullName', arguments: [document.cookie.substring(document.cookie.indexOf("user_id=") + 8, document.cookie.indexOf(";"))]},
+          success: function(data, status){
+            document.getElementById("user-full-name").innerText = data.substring(data.indexOf("successfully") + 12);
+          }
+      });
+  }
+
+  </script>
+
 </html>
