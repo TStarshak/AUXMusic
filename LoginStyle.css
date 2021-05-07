@@ -11,17 +11,39 @@ html {
     background: -ms-linear-gradient(0deg, #3a58a8, #353a46 20%, #313132 40%, #303030);
     background: -o-linear-gradient(0deg, #3a58a8, #353a46 20%, #313132 40%, #303030);
     background: linear-gradient(0deg, #3a58a8, #353a46 20%, #313132 40%, #303030);
+    font-family: 'DM Sans', sans-serif;
 }
 
-#topbar {
-    height: 1%;
+:root {
+    --bg: #303030;
+    --accent: #587AD8;
+    --lighttext: #d1d1d1;
+    --dark: #212121;
+    --mainfont: 'DM Sans', sans-serif;
+  }
+
+#header {
     width: 100%;
+    display: block;
+    margin-left: 0px;
+    background-color: var(--bg);
+  }
+  
+  #logo {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    transform: translateY(5px);
+  }
+  
+  h1 {
+    height: 1%;
     font-style: bold;
+    color: var(--lighttext);
     font-size: 70px;
-    color: #d1d1d1;
-    margin-top: 0px;
-    font-family: DMSansMedium;
-}
+    letter-spacing: 1px;
+    position: sticky;
+  }
 
 body {
     margin-top: 75px;
@@ -108,38 +130,33 @@ button {
     padding-right: 19%;
 }
 
-#logo {
-    height: 50px;
-    margin-top: 5px;
-    margin-right: 20px;
-}
-
 #profile{
     float: right;
-    width: 230px;
-    height: 80px;
-    margin-top: 10px;
+    width: 185px;
+    height: 65px;
+    margin-top: 20px;
     border-radius: 40px;
     background: #272727;
     cursor: pointer;
 }
   
 #profpic{
-    margin-top: 8px;
-    margin-left: 8px;
-    height:65px;
-    width:65px;
-    float:left;
-    border-radius: 50%;
+    margin-top: 5px;
+    margin-left: 5px;
+    height: 55px;
+    width: 55px;
+    float: left;
+    border-radius: 55px;
 }
   
 #username{
     float: right;
-    font-style: normal;
-    font-size: 45%;
+    font-weight: normal;
+    font-size: 21px;
     margin-top: 20px;
-    margin-right: 15%;
-    color: #a7a7a7;
+    margin-right: 20%;
+    color: #d1d1d1;
+    letter-spacing: 1%;
 }
 
 @font-face {
