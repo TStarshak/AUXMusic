@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="LoginStyle.css">
+        <link rel="shortcut icon" type="image/jpg" href="Logo.png"/>
+    </head>
+    <body>
+    <!-- sidebar code -->
+    <div id="sidebar" class="sidebar">
+        <img src="White Logo.png" id="logosidebar">
+        <span id="welcometext">Welcome</span>
+        <h4>MENU</h4>
+        <a href="#">Home</a>
+        <a href="#">Recent</a>
+        <a href="#">Library</a>
+        <h4>SESSIONS</h4>
+        <a href="#"><img src="join-session.png" id="joinicon">Join Session</a>
+        <a href="#"><img onclick="startSession()" src="start-session.png" id="starticon">Start Session</a>
+        <button class="openbtn"><img src="sidebar-icon.png" id="sidebaricon"></button>   
+      </div> 
+   
+     <script>
+       $('.openbtn').click(function(){
+         $('.sidebar').toggleClass('active');
+       });
+     </script> 
+  <h1>
+    <div id="header" name="header">
+      <img src="White Logo.png" id="logo">
+      aux
+      <!-- profile dropdown menu section-->
+  <div id="profiledropdown" name="profiledropdown">
+    
+    <button onclick="myFunction()" class="dropbtn"><img src="pfp-ex.jpg" id="pfp"><span id="username"></span></button>
+    <div id="myDropdown" class="dropdown-content">
+      <a href="#">Profile</a>
+      <a href="#">Settings</a>
+      <a href="Login.html" onclick="logOut()">Log Out</a>
+    </div>
+  </div>
+    </div>
+  </h1>
+  <script>
+    function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+  
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+  
+    function logOut(){
+      document.cookie = "user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+  
+    function startSession(){
+      jQuery.ajax({
+            type: "POST",
+            url: 'DatabaseAccess.php',
+            data: {functionname: 'startSession', arguments: [document.cookie.substring(document.cookie.indexOf("user_id=") + 8, document.cookie.indexOf(";"))]},
+            success: function(data, status){
+              document.location.href = "DJMainPage.html";
+            }
+        });
+    }
+  
+    function getNameData(){
+        jQuery.ajax({
+            type: "POST",
+            url: 'DatabaseAccess.php',
+            data: {functionname: 'getFirstName', arguments: [document.cookie.substring(document.cookie.indexOf("user_id=") + 8, document.cookie.indexOf(";"))]},
+            success: function(data, status){
+              document.getElementById("welcometext").innerText = "Welcome, " + data.substring(data.indexOf("successfully") + 12);
+              document.getElementById("username").innerText = data.substring(data.indexOf("successfully") + 12);
+            }
+        });
+  
+        jQuery.ajax({
+            type: "POST",
+            url: 'DatabaseAccess.php',
+            data: {functionname: 'getFullName', arguments: [document.cookie.substring(document.cookie.indexOf("user_id=") + 8, document.cookie.indexOf(";"))]},
+            success: function(data, status){
+              document.getElementById("user-full-name").innerText = data.substring(data.indexOf("successfully") + 12);
+            }
+        });
+    }
+  
+    </script>
+      
+      <h3>Spotify Login</h3>
+      <div class="text-enter">
+        <p class="text-enter-name">Username<span style="color: #587ad8;">*</span></p>
+        <input id="username-enter">
+      </div>
+      <div class="text-enter">
+        <p class="text-enter-name">Password<span style="color: #587ad8;">*</span></p>
+        <input type="password" id="password-enter"><input type="submit" id="show" onclick="swapPasswordVisibility()" value="SHOW" style="font-family: 'DM Sans', sans-serif;">
+      </div>
+      <button id="login-button" v-on:click="displayData">LOGIN</button>
+    </body>
+    <script>
+        /*
+       var loginButton = new Vue({
+            el: '#login-button',
+            data: {},
+            methods: {
+                displayData: function(event) {
+                    jQuery.ajax({
+                            type: "POST",
+                            url: 'DatabaseAccess.php',
+                            data: {functionname: 'getAccount', arguments: [document.getElementById('username-enter').value, document.getElementById('password-enter').value]},
+                            success: function(data, status){
+                              if(String(data).indexOf("You are now logged in.") != -1){
+                                document.cookie = "user_id=" + String(data).substring(String(data).indexOf("in.") + 3);
+                                document.location.href = "Profile.html";
+                              } else {
+                                alert(data);
+                              }
+                            }
+                        });
+                }
+            }
+        })*/
+       
+       function swapPasswordVisibility(){
+        if(document.getElementById("show").style.color == "rgb(167, 167, 167)" || document.getElementById("show").style.color == ""){
+          document.getElementById("show").style.color = "#d1d1d1"
+          document.getElementById("password-enter").type = "text";
+        } else {
+          document.getElementById("show").style.color = "#a7a7a7"
+          document.getElementById("password-enter").type = "password";
+        }
+       }
+    </script>
+</html>
