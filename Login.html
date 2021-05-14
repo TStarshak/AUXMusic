@@ -4,16 +4,24 @@
         <title>Login</title>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="LoginStyle.css">
+        <link rel="shortcut icon" type="image/jpg" href="Logo.png"/>
     </head>
     <body>
-      <div id = "topbar">
-        <img src = "White Logo.png" id = "logo">aux
-        <div id = "profile" type="text" name="profile">
-          <img id = "profpic" src = "profilepic.jpg">
-          <span id = "username">GUEST</span>
-        </div>
-      </div>
+      
+        <h1>
+          <div id="header" name="header">
+            <img src="White Logo.png" id="logo">
+            aux
+            <div id = "profile" type="text" name="profile">
+              <img id = "profpic" src = "profilepic.jpg">
+              <span id = "username">GUEST</span>
+            </div>
+          </div>
+        </h1>
+        
+      
       <h3>Login</h3>
       <div class="text-enter">
         <p class="text-enter-name">Username<span style="color: #587ad8;">*</span></p>
@@ -21,7 +29,7 @@
       </div>
       <div class="text-enter">
         <p class="text-enter-name">Password<span style="color: #587ad8;">*</span></p>
-        <input type="password" id="password-enter"><input type="submit" id="show" onclick="swapPasswordVisibility()" value="SHOW">
+        <input type="password" id="password-enter"><input type="submit" id="show" onclick="swapPasswordVisibility()" value="SHOW" style="font-family: 'DM Sans', sans-serif;">
       </div>
       <button id="login-button" v-on:click="displayData">LOGIN</button>
       <a href="SignUp.html" style="text-decoration: none;"><button id="signup-button" v-on:click="displayData">SIGN UP</button></a>
