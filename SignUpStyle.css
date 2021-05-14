@@ -1,0 +1,176 @@
+html {
+    min-height: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background: blue;
+    background-repeat:no-repeat;
+    background: -webkit-linear-gradient(0deg, #3a58a8, #353a46 20%, #313132 40%, #303030);
+    background: -moz-linear-gradient(0deg, #3a58a8, #353a46 20%, #313132 40%, #303030);
+    background: -ms-linear-gradient(0deg, #3a58a8, #353a46 20%, #313132 40%, #303030);
+    background: -o-linear-gradient(0deg, #3a58a8, #353a46 20%, #313132 40%, #303030);
+    background: linear-gradient(0deg, #3a58a8, #353a46 20%, #313132 40%, #303030);
+    font-family: 'DM Sans', sans-serif;
+}
+
+:root {
+    --bg: #303030;
+    --accent: #587AD8;
+    --lighttext: #d1d1d1;
+    --dark: #212121;
+    --mainfont: 'DM Sans', sans-serif;
+  }
+
+#header {
+    width: 100%;
+    display: block;
+    margin-left: 0px;
+    background-color: var(--bg);
+  }
+  
+  #logo {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    transform: translateY(5px);
+  }
+  
+  h1 {
+    height: 1%;
+    font-style: bold;
+    color: var(--lighttext);
+    font-size: 70px;
+    letter-spacing: 1px;
+    position: sticky;
+  }
+
+
+body {
+    margin-top: 75px;
+    margin-left: 125px;
+    margin-right: 125px;
+}
+
+h3 {
+    font-size: 70px;
+    color: #587ad8;
+    font-family: DMSansRegular;
+    letter-spacing: 1px;
+    margin-top: 90px;
+}
+
+input {
+    background-color: #272727;
+    color: #d1d1d1;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 35px;
+    height: 70px;
+    width: 92%;
+    border-radius: 35px;
+    border: 0;
+}
+
+input[type="submit"]{
+    width: 120px;
+    height: 70px;
+    color: #a7a7a7;
+    margin-left: -115px;
+    margin-right: -300px;
+    padding-left: 0px;
+    padding-right: 40px;
+    background-color: transparent;
+    font-size: 25px;
+}
+
+button {
+    width: 80%;
+    height: 70px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 80px;
+    font-size: 30px;
+    font-family: DMSansRegular;
+    border: 0;
+    color: #d1d1d1;
+}
+
+.text-enter{
+    color: #d1d1d1;
+    font-family: DMSansRegular;
+    font-size: 35px;
+    margin-top: 70px;
+}
+
+.text-enter-name{
+    margin-left: 30px;
+    margin-bottom: 20px;
+}
+
+#login-button{
+    background-color: #212121;
+    margin-top: 40px;
+}
+
+#login-button:active{
+    background-color: #252525;
+}
+
+#signup-button{
+    background-color: #587ad8;
+}
+
+#signup-button:active{
+    background-color: #4965b3;
+}
+
+#password-enter{
+    width: 77%;
+    padding-right: 19%;
+}
+
+#profile{
+    float: right;
+    width: 185px;
+    height: 65px;
+    margin-top: 20px;
+    border-radius: 40px;
+    background: #272727;
+    cursor: pointer;
+}
+  
+#profpic{
+    margin-top: 5px;
+    margin-left: 5px;
+    height: 55px;
+    width: 55px;
+    float: left;
+    border-radius: 55px;
+}
+  
+#username{
+    float: right;
+    font-weight: normal;
+    font-size: 21px;
+    margin-top: 20px;
+    margin-right: 20%;
+    color: #d1d1d1;
+    letter-spacing: 1%;
+}
+
+@font-face {
+    font-family: DMSansMedium;
+    src: url(DM_Sans/DMSans-Medium.ttf);
+}
+
+@font-face {
+    font-family: DMSansBold;
+    src: url(DM_Sans/DMSans-Bold.ttf);
+}
+
+@font-face {
+    font-family: DMSansRegular;
+    src: url(DM_Sans/DMSans-Regular.ttf);
+}
