@@ -39,6 +39,7 @@
                             success: function(data, status){
                               if(String(data).indexOf("You are now logged in.") != -1){
                                 document.cookie = "user_id=" + String(data).substring(String(data).indexOf("in.") + 3);
+                                document.cookie = "temp=";
                                 document.location.href = "Profile.html";
                               } else {
                                 alert(data);

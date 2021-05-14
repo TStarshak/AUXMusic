@@ -6,8 +6,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
-         rel = "stylesheet">
+  <script defer src="https://js-cdn.music.apple.com/musickit/v1/musickit.js"></script>
+  <script src="https://sdk.scdn.co/spotify-player.js"></script>
+  <script defer src="musicplayer.js"></script>
+  <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
       <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
       <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <link rel="shortcut icon" type="image/jpg" href="Logo.png"/>
@@ -20,8 +22,7 @@
  </script>
 </head>
 
-<body onload="getNameData()">
-
+<body onload="getNameData(), onPageLoad()">
     <!-- sidebar code -->
     <div id="sidebar" class="sidebar">
      <img src="White Logo.png" id="logosidebar">
@@ -31,7 +32,7 @@
      <a href="#">Recent</a>
      <a href="#">Library</a>
      <h4>SESSIONS</h4>
-     <a href="#"><img src="join-session.png" id="joinicon">Join Session</a>
+     <a href="#"><img onclick="joinSession()" src="join-session.png" id="joinicon">Join Session</a>
      <a href="#"><img onclick="startSession()" src="start-session.png" id="starticon">Start Session</a>
      <button class="openbtn"><img src="sidebar-icon.png" id="sidebaricon"></button>   
    </div> 
@@ -63,6 +64,8 @@
 </div>
 <img src="pfp-ex.jpg" id="pfp-large">
 <h1 id="user-full-name"></h1>
+<button onclick="requestAuthorization()" class="requestbutton" type="button"><span id="buttontext" style="color:#fff;">Connect a Spotify Account</span></button>
+<button onclick="configMusicKit()" class="requestbutton2" type="button"><span id="buttontext" style="color:#fff;">Connect an Apple Music Account</span></button>
 </body>
 
 <script>
@@ -84,7 +87,7 @@
   }
 
   function logOut(){
-    document.cookie = "user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "user_id= ;";
   }
 
   function startSession(){
@@ -118,6 +121,84 @@
           }
       });
   }
+
+  function joinSession(){
+    var username = prompt("Please enter the username of a user currently in the session: ", "Username");
+    jQuery.ajax({
+          type: "POST",
+          url: 'DatabaseAccess.php',
+          data: {functionname: 'joinSession', arguments: [username, document.cookie.substring(document.cookie.indexOf("user_id=") + 8, document.cookie.indexOf(";"))]},
+          success: function(data, status){
+            if(data.substring(data.indexOf("successfully") + 12) == "No room"){
+              alert("Either that user does not exist, or they are not currently in a session.");
+            } else {
+              document.location.href = "ListenerMainPage.html";
+            }
+          }
+      });
+  }
+
+  setInterval(databaseCheckIn, 5000);
+
+  function databaseCheckIn(){
+    jQuery.ajax({
+          type: "POST",
+          url: 'DatabaseAccess.php',
+          data: {functionname: 'checkForInvite', arguments: [document.cookie.substring(document.cookie.indexOf("user_id=") + 8, document.cookie.indexOf(";"))]},
+          success: function(data, status){
+            if(data.substring(data.indexOf("successfully") + 12) != "No invite"){
+              var response = confirm(data.substring(data.indexOf("successfully") + 12));
+              if(response){
+                var username = data.substring(data.indexOf("a room by ") + 10, data.indexOf(". Would you like"));
+                jQuery.ajax({
+                      type: "POST",
+                      url: 'DatabaseAccess.php',
+                      data: {functionname: 'joinSession', arguments: [username, document.cookie.substring(document.cookie.indexOf("user_id=") + 8, document.cookie.indexOf(";"))]},
+                      success: function(data, status){
+                        if(data.substring(data.indexOf("successfully") + 12) == "No room"){
+                          alert("Either that user does not exist, or they are not currently in a session.");
+                        } else {
+                          document.location.href = "ListenerMainPage.html";
+                        }
+                      }
+                  });
+              }
+            }
+          }
+      });
+  }
+
+  window.onSpotifyWebPlaybackSDKReady = () => {
+            const token = localStorage.getItem("access_token");
+            const player = new Spotify.Player({
+                name: 'AUX Music',
+                getOAuthToken: cb => { cb(token); }
+            });
+
+            // Error handling
+            player.addListener('initialization_error', ({ message }) => { console.error(message); });
+            player.addListener('authentication_error', ({ message }) => { console.error(message); });
+            player.addListener('account_error', ({ message }) => { console.error(message); });
+            player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+            // Playback status updates
+            player.addListener('player_state_changed', state => { console.log(state); });
+
+            // Ready
+            player.addListener('ready', ({ device_id }) => {
+                console.log('Ready with Device ID', device_id);
+                refreshDevices();
+            });
+
+            // Not Ready
+            player.addListener('not_ready', ({ device_id }) => {
+                console.log('Device ID has gone offline', device_id);
+            });
+
+            // Connect to the player!
+            player.connect();
+
+  };
 
   </script>
 
